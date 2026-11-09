@@ -1,0 +1,82 @@
+{
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "yacoubalhaidari/provider-payments-sa",
+    "description": "Standalone Laravel payment integrations extracted from audited provider flows.",
+    "keywords": [
+        "laravel",
+        "payment",
+        "clickpay",
+        "telr",
+        "tabby",
+        "tamara",
+        "mispay",
+        "saudi-arabia",
+        "bnpl"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yacoub Al-Haidari",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "ext-openssl": "*",
+        "illuminate/support": "^12.0 || ^13.0",
+        "illuminate/http": "^12.0 || ^13.0",
+        "illuminate/contracts": "^12.0 || ^13.0",
+        "illuminate/database": "^12.0 || ^13.0",
+        "illuminate/console": "^12.0 || ^13.0",
+        "illuminate/routing": "^12.0 || ^13.0",
+        "guzzlehttp/guzzle": "^7.9"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0 || ^11.0",
+        "phpunit/phpunit": "^11.5 || ^12.0",
+        "mockery/mockery": "^1.6",
+        "laravel/pint": "^1.0"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "lint": "pint --test"
+    },
+    "autoload": {
+        "psr-4": {
+            "YacoubAlhaidari\\ProviderPayments\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "YacoubAlhaidari\\ProviderPayments\\Tests\\": "tests/"
+        },
+        "exclude-from-classmap": [
+            "/tests/consumer/"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "YacoubAlhaidari\\ProviderPayments\\ProviderPaymentsServiceProvider"
+            ],
+            "aliases": {
+                "Payment": "YacoubAlhaidari\\ProviderPayments\\Facades\\Payment"
+            }
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "archive": {
+        "exclude": [
+            "/vendor",
+            "/tests/consumer/vendor",
+            "/.env",
+            "/.phpunit.cache"
+        ]
+    }
+}

@@ -1,0 +1,7 @@
+# Installed dependencies
+/vendor/
+/tests/consumer/vendor/
+
+# Generated test caches and consumer runtime data
+/.phpunit.cache/
+/tests/consumer/bootstrap/cache/

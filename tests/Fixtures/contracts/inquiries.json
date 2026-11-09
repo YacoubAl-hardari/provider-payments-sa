@@ -1,0 +1,51 @@
+{
+  "clickpay": {
+    "tran_ref": "remote-1",
+    "profile_id": "123",
+    "cart_id": "ORD-1",
+    "cart_currency": "SAR",
+    "cart_amount": "150.00",
+    "tran_type": "sale",
+    "payment_result": {
+      "response_status": "A"
+    }
+  },
+  "telr": {
+    "order": {
+      "ref": "remote-1",
+      "cartid": "ORD-1",
+      "currency": "SAR",
+      "amount": "150.00",
+      "test": 1,
+      "status": {
+        "code": 3
+      }
+    }
+  },
+  "tabby": {
+    "id": "remote-1",
+    "currency": "SAR",
+    "amount": "150.00",
+    "status": "CLOSED",
+    "order": {
+      "reference_id": "ORD-1"
+    },
+    "captures": [
+      {
+        "id": "capture-1",
+        "amount": "150.00",
+        "reference_id": "cap-1"
+      }
+    ],
+    "refunds": []
+  },
+  "tamara": {
+    "order_id": "remote-1",
+    "order_reference_id": "ORD-1",
+    "total_amount": {
+      "amount": "150.00",
+      "currency": "SAR"
+    },
+    "status": "fully_captured"
+  }
+}

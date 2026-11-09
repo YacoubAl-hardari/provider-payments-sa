@@ -1,0 +1,23 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - {php: '8.3', laravel: '12.*', testbench: '10.*', phpunit: '11.*'}
+          - {php: '8.4', laravel: '12.*', testbench: '10.*', phpunit: '11.*'}
+          - {php: '8.5', laravel: '13.*', testbench: '11.*', phpunit: '12.*'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: openssl, mbstring, pdo_sqlite
+          coverage: none
+      - run: composer require --dev "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "phpunit/phpunit:${{ matrix.phpunit }}" --no-update
+      - run: composer update --prefer-dist --no-interaction --with-all-dependencies
+      - run: composer validate --strict
+      - run: composer test
+      - run: composer lint
