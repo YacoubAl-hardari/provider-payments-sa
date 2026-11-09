@@ -10,6 +10,16 @@ For setup and examples, start with the [README](README.md) or the
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-10
+
+### Fixed
+
+- Send the original order, amount and merchant IP in AlinmaPay inquiries.
+- Validate nested inquiry responses and reject invalid inquiries without marking
+  the payment as failed.
+- Map initiated payments to requires-action and preserve the provider status
+  when returning ledger-backed verification results.
+
 ## [1.0.0] - 2026-11-09
 
 ### Added

@@ -111,6 +111,7 @@ final class AlinmaPayGateway extends BankGateway implements CapturesPayments, Re
             'currency' => $currency,
             'order' => ['orderId' => $order],
             'customer' => ['billingAddressCountry' => 'SA'],
+            'merchantIp' => $this->config['merchant_ip'] ?? request()->ip(),
         ];
         $path = $this->environment() === 'sandbox' ? '/SB_Transactions' : '/Transactions';
 
@@ -168,7 +169,24 @@ final class AlinmaPayGateway extends BankGateway implements CapturesPayments, Re
     {
         $this->ready();
         $row = app(PaymentLedger::class)->find($this->name, $transactionReference);
-        $data = $this->api('10', 'INQUIRY', 0, $row->currency, ['referenceId' => $transactionReference]);
+        $data = $this->api('10', $row->order_reference, (int) $row->amount, $row->currency, ['referenceId' => $transactionReference]);
+        if (in_array((string) ($data['responseCode'] ?? ''), ['612', '622'], true)) {
+            throw new PaymentVerificationException('AlinmaPay rejected inquiry; payment state remains unknown.');
+        }
+        $nested = isset($data['orderDetails']) || isset($data['amountDetails']);
+        if ($nested) {
+            if ((string) ($data['terminalId'] ?? '') !== (string) $this->credential('terminal_id')) {
+                throw new PaymentVerificationException('AlinmaPay inquiry terminal mismatch.');
+            }
+            foreach (['orderId' => 'orderDetails.orderId', 'amount' => 'amountDetails.amount'] as $key => $path) {
+                $value = data_get($data, $path);
+                if ($value === null || (isset($data[$key]) && (string) $data[$key] !== (string) $value)) {
+                    throw new PaymentVerificationException('AlinmaPay inquiry fields missing or contradictory.');
+                }
+                $data[$key] = $value;
+            }
+            $data['currency'] ??= 'SAR';
+        }
         if (
             $this->identifier($data, 'transactionId') !== $transactionReference
             || $this->identifier($data, 'orderId') !== $row->order_reference
@@ -191,7 +209,8 @@ final class AlinmaPayGateway extends BankGateway implements CapturesPayments, Re
         $code = (string) ($data['responseCode'] ?? '');
 
         return match (true) {
-            in_array($result, ['PENDING', 'INITIATED', 'PROCESSING'], true) && in_array($code, ['000', '001'], true) => S::PENDING,
+            $result === 'INITIATED' && in_array($code, ['000', '001'], true) => S::REQUIRES_ACTION,
+            in_array($result, ['PENDING', 'PROCESSING'], true) && in_array($code, ['000', '001'], true) => S::PENDING,
             in_array($result, ['AUTHORIZED', 'AUTHORISED', 'PRE_AUTHORIZED'], true) && $code === '000' => S::AUTHORIZED,
             $result === 'SUCCESS' && $code === '000' && (string) ($data['paymentType'] ?? '') === '4' => S::AUTHORIZED,
             $result === 'SUCCESS' && $code === '000' && in_array((string) ($data['paymentType'] ?? ''), ['1', '5', '15'], true) => S::PAID,

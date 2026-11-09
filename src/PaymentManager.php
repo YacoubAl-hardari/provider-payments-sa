@@ -50,10 +50,10 @@ class PaymentManager
         $ledger->accept($gateway->getName(), $ledger->eventKey($result), $result);
         $stored = $ledger->response($ledger->find($gateway->getName(), $reference));
         if ($stored->status !== $result->status) {
-            return new PaymentResponseDTO(...array_replace(get_object_vars($stored), ['metadata' => $stored->metadata + ['remote_status' => $result->status->value, 'reconciliation_required' => true]]));
+            return new PaymentResponseDTO(...array_replace(get_object_vars($stored), ['providerStatus' => $result->providerStatus, 'metadata' => $stored->metadata + ['remote_status' => $result->status->value, 'reconciliation_required' => true]]));
         }
 
-        return $stored;
+        return new PaymentResponseDTO(...array_replace(get_object_vars($stored), ['providerStatus' => $result->providerStatus]));
     }
 
     public function recoverPayment(string $orderReference, ?string $name = null): PaymentResponseDTO

@@ -11,6 +11,7 @@ return [
     'providers' => [
         'alinmapay' => [
             'driver' => 'alinmapay',
+            'merchant_ip' => env('ALINMAPAY_MERCHANT_IP'),
             'enabled' => env('ALINMAPAY_ENABLED', false),
             'environment' => env('ALINMAPAY_ENV', 'sandbox'),
             'base_url' => 'https://pg.alinmapay.com.sa',

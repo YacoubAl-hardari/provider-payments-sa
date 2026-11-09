@@ -157,7 +157,8 @@ final class BankGatewayTest extends TestCase
         self::assertSame($bank === 'alrajhi' ? 'captured' : 'paid', DB::table('ppsa_transactions')->value('status'));
         Http::assertSent(function ($request) use ($bank) {
             if ($bank === 'alinmapay') {
-                return $request['referenceId'] === 'remote-1' && $request['paymentType'] === '10' && $request['amount'] === '0.00';
+                return $request['referenceId'] === 'remote-1' && $request['paymentType'] === '10'
+                    && $request['amount'] === '150.00' && $request['order']['orderId'] === 'ORD-1';
             }
             $payload = $this->bankDecrypt($request[0]['trandata']);
 
