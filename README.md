@@ -20,6 +20,19 @@ One Laravel API for **ClickPay, Telr, Tabby, Tamara, MisPay, AlinmaPay and AlRaj
 
 Run these commands in your **Laravel application**, with a configured SQL database and a public HTTPS application URL. You need merchant credentials for every enabled gateway.
 
+```sh
+composer require yacoubalhaidari/provider-payments-sa
+```
+
+This command requires the package to be indexed on Packagist or available through
+your configured Composer repository. If it is not yet indexed, register the GitHub
+repository first, then install the first tagged release:
+
+```sh
+composer config repositories.provider-payments-sa vcs https://github.com/YacoubAl-hardari/provider-payments-sa.git
+composer require yacoubalhaidari/provider-payments-sa:^1.0
+```
+
 <details>
 <summary>Install from a local checkout or private repository</summary>
 
@@ -379,7 +392,7 @@ composer test
 composer lint
 ```
 
-Tests, fixtures and CI are maintained with the source. Local dependencies, secrets, runtime data and editor files are excluded through `.gitignore`; development files are excluded from Git release archives through `.gitattributes`.
+Tests, fixtures and CI are maintained with the source. Existing dependency and generated cache directories are excluded through `.gitignore`; development files are excluded from Git release archives through `.gitattributes`. Keep merchant credentials outside version control.
 
 ## License
 

@@ -10,6 +10,17 @@ For setup and examples, start with the [README](README.md) or the
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-09
+
+### Added
+
+- Initial tagged release of the unified Laravel payment package for ClickPay,
+  Telr, Tabby, Tamara, MisPay, AlinmaPay and AlRajhi.
+- Hosted checkout, authenticated provider notifications and an optional SQL
+  payment ledger, with provider-specific inquiry and financial capabilities.
+- Tamara pre-checkout eligibility checks and promotional widget configuration
+  for supported providers.
+
 ### Changed
 
 - Reorganized the README around installation, gateway selection, checkout creation
@@ -19,16 +30,15 @@ For setup and examples, start with the [README](README.md) or the
 - Added the Provider Payments SA banner to the README.
 - Moved detailed application examples and operational guidance into the linked
   integration reference, preserving the complete order-to-checkout example.
-- Expanded `.gitignore` to exclude local credentials, dependencies, caches,
-  coverage reports, runtime data, scratch files and editor/assistant settings.
-  Source code, test fixtures and environment examples remain available.
+- Scoped `.gitignore` to dependency and generated cache directories that exist
+  in this package. Source code, test fixtures and environment examples remain
+  available.
 - Expanded `.gitattributes` exclusions for development files in Git release
   archives while retaining user-facing documentation.
 
 ### Compatibility and upgrade notes
 
-- These changes affect documentation and repository packaging rules; they do not
-  change the payment API, database schema or gateway behavior.
+- This is the first tagged release; no prior tagged-version migration is defined.
 - The package requires PHP `^8.3` and Laravel 12 or 13. See
   [installation requirements](docs/integration-guide.md#3-requirements).
 - `.gitignore` does not remove files already tracked by Git. Review tracked files
@@ -81,8 +91,9 @@ For setup and examples, start with the [README](README.md) or the
 - Automated HTTP-fake tests do not establish provider certification or merchant
   sandbox acceptance. Verify live account settings, public HTTPS callbacks,
   hosted widgets and concurrency against the deployment's SQL database.
-- Eligibility tests were checked locally: 4 tests and 8 assertions passed. This
-  focused check does not represent a full-suite run or a live Tamara API test.
+- Pre-release local checks passed: Composer strict validation, the full suite
+  (237 tests, 592 assertions) and Pint formatting checks on PHP 8.5.12. These
+  checks do not represent live provider API tests.
 
 See [operational guidance](docs/integration-guide.md#15-operational-limits-and-license)
 for deployment responsibilities and third-party terms.
